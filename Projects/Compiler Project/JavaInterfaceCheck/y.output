@@ -1,0 +1,265 @@
+Grammar
+
+    0 $accept: S $end
+
+    1 S: E
+
+    2 E: PUBLIC INTERFACE IDENTIFIER A OPEN BODY CLOSE
+
+    3 A: EXTENDS IDENTIFIER
+    4  | /* empty */
+
+    5 BODY: BODY PUBLIC return IDENTIFIER SOPEN PARAM SCLOSE SEMI
+    6     | /* empty */
+
+    7 return: TYPE
+    8       | VOID
+
+    9 PARAM: PARAM ',' TYPE IDENTIFIER
+   10      | TYPE IDENTIFIER
+   11      | /* empty */
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+',' (44) 9
+error (256)
+PUBLIC (258) 2 5
+INTERFACE (259) 2
+IDENTIFIER (260) 2 3 5 9 10
+VOID (261) 8
+TYPE (262) 7 9 10
+SEMI (263) 5
+OPEN (264) 2
+CLOSE (265) 2
+SOPEN (266) 5
+SCLOSE (267) 5
+EXTENDS (268) 3
+
+
+Nonterminals, with rules where they appear
+
+$accept (15)
+    on left: 0
+S (16)
+    on left: 1, on right: 0
+E (17)
+    on left: 2, on right: 1
+A (18)
+    on left: 3 4, on right: 2
+BODY (19)
+    on left: 5 6, on right: 2 5
+return (20)
+    on left: 7 8, on right: 5
+PARAM (21)
+    on left: 9 10 11, on right: 5 9
+
+
+state 0
+
+    0 $accept: . S $end
+
+    PUBLIC  shift, and go to state 1
+
+    S  go to state 2
+    E  go to state 3
+
+
+state 1
+
+    2 E: PUBLIC . INTERFACE IDENTIFIER A OPEN BODY CLOSE
+
+    INTERFACE  shift, and go to state 4
+
+
+state 2
+
+    0 $accept: S . $end
+
+    $end  shift, and go to state 5
+
+
+state 3
+
+    1 S: E .
+
+    $default  reduce using rule 1 (S)
+
+
+state 4
+
+    2 E: PUBLIC INTERFACE . IDENTIFIER A OPEN BODY CLOSE
+
+    IDENTIFIER  shift, and go to state 6
+
+
+state 5
+
+    0 $accept: S $end .
+
+    $default  accept
+
+
+state 6
+
+    2 E: PUBLIC INTERFACE IDENTIFIER . A OPEN BODY CLOSE
+
+    EXTENDS  shift, and go to state 7
+
+    $default  reduce using rule 4 (A)
+
+    A  go to state 8
+
+
+state 7
+
+    3 A: EXTENDS . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 9
+
+
+state 8
+
+    2 E: PUBLIC INTERFACE IDENTIFIER A . OPEN BODY CLOSE
+
+    OPEN  shift, and go to state 10
+
+
+state 9
+
+    3 A: EXTENDS IDENTIFIER .
+
+    $default  reduce using rule 3 (A)
+
+
+state 10
+
+    2 E: PUBLIC INTERFACE IDENTIFIER A OPEN . BODY CLOSE
+
+    $default  reduce using rule 6 (BODY)
+
+    BODY  go to state 11
+
+
+state 11
+
+    2 E: PUBLIC INTERFACE IDENTIFIER A OPEN BODY . CLOSE
+    5 BODY: BODY . PUBLIC return IDENTIFIER SOPEN PARAM SCLOSE SEMI
+
+    PUBLIC  shift, and go to state 12
+    CLOSE   shift, and go to state 13
+
+
+state 12
+
+    5 BODY: BODY PUBLIC . return IDENTIFIER SOPEN PARAM SCLOSE SEMI
+
+    VOID  shift, and go to state 14
+    TYPE  shift, and go to state 15
+
+    return  go to state 16
+
+
+state 13
+
+    2 E: PUBLIC INTERFACE IDENTIFIER A OPEN BODY CLOSE .
+
+    $default  reduce using rule 2 (E)
+
+
+state 14
+
+    8 return: VOID .
+
+    $default  reduce using rule 8 (return)
+
+
+state 15
+
+    7 return: TYPE .
+
+    $default  reduce using rule 7 (return)
+
+
+state 16
+
+    5 BODY: BODY PUBLIC return . IDENTIFIER SOPEN PARAM SCLOSE SEMI
+
+    IDENTIFIER  shift, and go to state 17
+
+
+state 17
+
+    5 BODY: BODY PUBLIC return IDENTIFIER . SOPEN PARAM SCLOSE SEMI
+
+    SOPEN  shift, and go to state 18
+
+
+state 18
+
+    5 BODY: BODY PUBLIC return IDENTIFIER SOPEN . PARAM SCLOSE SEMI
+
+    TYPE  shift, and go to state 19
+
+    $default  reduce using rule 11 (PARAM)
+
+    PARAM  go to state 20
+
+
+state 19
+
+   10 PARAM: TYPE . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 21
+
+
+state 20
+
+    5 BODY: BODY PUBLIC return IDENTIFIER SOPEN PARAM . SCLOSE SEMI
+    9 PARAM: PARAM . ',' TYPE IDENTIFIER
+
+    SCLOSE  shift, and go to state 22
+    ','     shift, and go to state 23
+
+
+state 21
+
+   10 PARAM: TYPE IDENTIFIER .
+
+    $default  reduce using rule 10 (PARAM)
+
+
+state 22
+
+    5 BODY: BODY PUBLIC return IDENTIFIER SOPEN PARAM SCLOSE . SEMI
+
+    SEMI  shift, and go to state 24
+
+
+state 23
+
+    9 PARAM: PARAM ',' . TYPE IDENTIFIER
+
+    TYPE  shift, and go to state 25
+
+
+state 24
+
+    5 BODY: BODY PUBLIC return IDENTIFIER SOPEN PARAM SCLOSE SEMI .
+
+    $default  reduce using rule 5 (BODY)
+
+
+state 25
+
+    9 PARAM: PARAM ',' TYPE . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 26
+
+
+state 26
+
+    9 PARAM: PARAM ',' TYPE IDENTIFIER .
+
+    $default  reduce using rule 9 (PARAM)
